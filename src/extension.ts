@@ -43,8 +43,8 @@ import { workspace } from 'vscode';
  */
 
 export function activate(context:ExtensionContext) {
-  const disposable1 = commands.registerCommand('extension.import-splitnsort.splitnsort', splitAndSort);
-  const disposable2 = commands.registerCommand('extension.import-splitnsort.splitonly', splitAndSort);
+  const disposable1 = commands.registerCommand('extension.typescript-import-splitsort.splitnsort', splitAndSort);
+  const disposable2 = commands.registerCommand('extension.typescript-import-splitsort.splitonly', splitAndDontSort);
   context.subscriptions.push(disposable1);
   context.subscriptions.push(disposable2);
   onSave();
@@ -59,7 +59,8 @@ export function deactivate() { }
 let subscription:Disposable;
 
 function onSave() {
-  const config = workspace.getConfiguration('import-splitnsort');
+  // typescript-import-splitsort.leave-unsorted
+  const config = workspace.getConfiguration('typescript-import-splitsort');
   if(config.get<boolean>('on-save')) {
     if(!subscription) {
         subscription = workspace.onWillSaveTextDocument(splitAndSortOnSave);
@@ -78,10 +79,30 @@ function onSave() {
 function splitAndSort() {
   const editor = window.activeTextEditor;
   let sortIt = true;
-  const config = workspace.getConfiguration('import-splitnsort');
-  if(config.get<boolean>('leave-unsorted')) {
-    sortIt = false;
+  // const config = workspace.getConfiguration('typescript-import-splitsort');
+  // if(config.get<boolean>('leave-unsorted')) {
+  //   sortIt = false;
+  // }
+
+  if(editor.document.languageId === 'typescript') {
+    Parser.makeEdits(editor.document.getText(), sortIt)
+      .then((edits:TextEdit[]) => {
+        if(edits.length > 0) {
+          const range = edits[0].range;
+          const imports = edits[0].newText;
+          editor.edit(edit => edit.replace(range, imports));
+        }
+      });
   }
+}
+
+function splitAndDontSort() {
+  const editor = window.activeTextEditor;
+  let sortIt = false;
+  // const config = workspace.getConfiguration('typescript-import-splitsort');
+  // if(config.get<boolean>('leave-unsorted')) {
+  //   sortIt = false;
+  // }
 
   if(editor.document.languageId === 'typescript') {
     Parser.makeEdits(editor.document.getText(), sortIt)
@@ -97,7 +118,7 @@ function splitAndSort() {
 
 function splitAndSortOnSave(event: TextDocumentWillSaveEvent) {
   let sortIt = true;
-  const config = workspace.getConfiguration('import-splitnsort');
+  const config = workspace.getConfiguration('typescript-import-splitsort');
   if(config.get<boolean>('leave-unsorted')) {
     sortIt = false;
   }

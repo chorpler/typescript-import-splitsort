@@ -22,9 +22,7 @@
   "homepage": "https://github.com/chorpler/typescript-import-splitsort/blob/master/README.md",
   "license": "MIT",
   "categories": [
-    "Programming Languages",
-    "TypeScript",
-    "imports"
+    "Formatters"
   ],
   "activationEvents": [
     "onCommand:extension.typescript-import-splitsort.splitnsort",
@@ -33,6 +31,20 @@
   ],
   "main": "./out/extension",
   "contributes": {
+    "keybindings": [
+      {
+        "command": "extension.typescript-import-splitsort.splitonly",
+        "key": "ctrl+k ctrl+i",
+        "mac": "cmd+k cmd+i",
+        "when": "editorLangId == typescript"
+      },
+      {
+        "command": "extension.typescript-import-splitsort.splitnsort",
+        "key": "ctrl+k ctrl+8",
+        "mac": "cmd+k cmd+8",
+        "when": "editorLangId == typescript"
+      }
+    ],
     "commands": [
       {
         "command": "extension.typescript-import-splitsort.splitnsort",
