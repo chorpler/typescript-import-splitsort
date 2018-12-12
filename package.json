@@ -1,38 +1,82 @@
 {
-    "name": "typescript-import-splitsort",
-    "displayName": "TypeScript Import SplitSorter",
-    "description": "Splits TypeScript import statements and optionally sorts them",
-    "version": "0.0.1",
-    "engines": {
-        "vscode": "^1.30.0"
-    },
-    "categories": [
-        "Other"
+  "name": "typescript-import-splitsort",
+  "displayName": "TypeScript Import SplitSorter",
+  "description": "An opinionated extension to split and sort TypeScript imports into one export per import, and optionally sort the resulting imports.",
+  "version": "1.0.5",
+  "galleryBanner": {
+    "color": "#424242",
+    "theme": "dark"
+  },
+  "bugs": {
+    "url": "https://github.com/chorpler/typescript-import-splitsort/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chorpler/typescript-import-splitsort.git"
+  },
+  "icon": "icon.png",
+  "publisher": "mflo999",
+  "engines": {
+    "vscode": "^1.26.0"
+  },
+  "homepage": "https://github.com/chorpler/typescript-import-splitsort/blob/master/README.md",
+  "license": "MIT",
+  "categories": [
+    "Programming Languages",
+    "TypeScript",
+    "imports"
+  ],
+  "activationEvents": [
+    "onCommand:extension.typescript-import-splitsort.splitnsort",
+    "onCommand:extension.typescript-import-splitsort.splitonly",
+    "onLanguage:typescript"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.typescript-import-splitsort.splitnsort",
+        "title": "Split and sort imports"
+      },
+      {
+        "command": "extension.typescript-import-splitsort.splitonly",
+        "title": "Split imports without sorting"
+      }
     ],
-    "activationEvents": [
-        "onCommand:extension.sayHello"
-    ],
-    "main": "./out/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "extension.sayHello",
-                "title": "Hello World"
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^3.1.4",
-        "vscode": "^1.1.25",
-        "tslint": "^5.8.0",
-        "@types/node": "^8.10.25",
-        "@types/mocha": "^2.2.42"
+    "configuration": {
+      "title": "Split'n'sort imports configuration",
+      "properties": {
+        "typescript-import-splitsort.on-save": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically split'n'sort imports on save."
+        },
+        "typescript-import-splitsort.leave-unsorted": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to leave imports unsorted after splitting them"
+        }
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^8.10.25",
+    "eslint": "^4.19.1",
+    "rxjs-tslint-rules": "^4.13.1",
+    "tslint": "^5.8.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.1.4",
+    "vscode": "^1.1.26"
+  },
+  "dependencies": {
+    "typescript-parser": "^2.6.1"
+  }
 }
