@@ -43,7 +43,9 @@ export class Parser {
   public set sortImports(val:boolean) { Parser.sortImports = Boolean(val); }
 
   /** ctor */
-  constructor(private src: string) { }
+  constructor(private src: string) {
+    console.log(`Parser constructed with source:\n`, src);
+  }
 
   /** Make an edit to replace imports */
   static makeEdits(src: string, toSort:boolean): Promise<TextEdit[]> {
@@ -61,36 +63,38 @@ export class Parser {
 
   /** Parse the source, extracting the imports */
   parse(): Promise<any> {
-    if (!this.src.includes('import '))
+    if(!this.src.includes('import ')) {
       return Promise.resolve();
-    else return new Promise((resolve, reject) => {
-      this.parser.parseSource(this.src).then((file: File) => {
-        let start = Number.MAX_SAFE_INTEGER;
-        let end = Number.MIN_SAFE_INTEGER;
-        file.imports.forEach((node: Import) => {
-          start = Math.min(start, node.start);
-          end = Math.max(end, node.end);
-          // process each type of import
-          switch (node.constructor) {
-            case ExternalModuleImport:
-              this.extractExternal(<ExternalModuleImport>node);
-              break;
-            case NamedImport:
-              this.extractNamed(<NamedImport>node);
-              break;
-            case NamespaceImport:
-              this.extractNamespace(<NamespaceImport>node);
-              break;
-            case StringImport:
-              this.extractString(<StringImport>node);
-              break;
-          }
+    } else {
+      return new Promise((resolve, reject) => {
+        this.parser.parseSource(this.src).then((file: File) => {
+          let start = Number.MAX_SAFE_INTEGER;
+          let end = Number.MIN_SAFE_INTEGER;
+          file.imports.forEach((node: Import) => {
+            start = Math.min(start, node.start);
+            end = Math.max(end, node.end);
+            // process each type of import
+            switch (node.constructor) {
+              case ExternalModuleImport:
+                this.extractExternal(<ExternalModuleImport>node);
+                break;
+              case NamedImport:
+                this.extractNamed(<NamedImport>node);
+                break;
+              case NamespaceImport:
+                this.extractNamespace(<NamespaceImport>node);
+                break;
+              case StringImport:
+                this.extractString(<StringImport>node);
+                break;
+            }
+          });
+          this.detectCodingStyle(start, end);
+          this.makeRange(start, end);
+          resolve();
         });
-        this.detectCodingStyle(start, end);
-        this.makeRange(start, end);
-        resolve();
       });
-    });
+    }
   }
 
   /** Produce sorted import statements */
@@ -110,14 +114,18 @@ export class Parser {
   private detectCodingStyle(start: number,
                             end: number): void {
     const imports = this.src.substring(start, end);
-    if (!imports.includes(this.braces[0]))
+    if (!imports.includes(this.braces[0])) {
       this.braces[0] = '}';
-    if (!imports.includes(this.braces[1]))
+    }
+    if (!imports.includes(this.braces[1])) {
       this.braces[1] = '}';
-    if (!imports.includes(this.quote))
+    }
+    if (!imports.includes(this.quote)) {
       this.quote = '"';
-    if (!imports.includes(this.semicolon))
+    }
+    if (!imports.includes(this.semicolon)) {
       this.semicolon = '';
+    }
   }
 
   private extractExternal(node: ExternalModuleImport): void {
@@ -125,15 +133,17 @@ export class Parser {
   }
 
   private extractNamed(node: NamedImport): void {
-    if (node.defaultAlias)
+    if (node.defaultAlias) {
       this.defaultImports[node.defaultAlias] = node.libraryName;
+    }
     node.specifiers.forEach((specifier: SymbolSpecifier) => {
       const initialChar = specifier.specifier[0];
       const dict = (initialChar === initialChar.toLowerCase())?
         this.namedFunctionImports : this.namedClassImports;
-      if (specifier.alias)
+      if (specifier.alias) {
         dict[`${specifier.specifier} as ${specifier.alias}`] = node.libraryName;
-      else dict[specifier.specifier] = node.libraryName;
+      }
+      else { dict[specifier.specifier] = node.libraryName; }
     });
   }
 
@@ -151,14 +161,15 @@ export class Parser {
     let line = 0, character = 0;
     let spos: Position, epos: Position;
     for (let ix = 0; ix < end; ix++) {
-      if (ix === start)
+      if (ix === start) {
         spos = new Position(line, character);
+      }
       // increment counters
       if (this.src[ix] === '\n') {
         line += 1;
         character = 0;
       }
-      else character += 1;
+      else { character += 1; }
     }
     // complete range
     epos = new Position(line, character);
@@ -175,8 +186,9 @@ export class Parser {
       imports = this.unsortedNamesIn(value);
     }
     imports.forEach((name, ix) => {
-      if (ix === 0)
+      if (ix === 0) {
         stmts.push('');
+      }
       const library = value[name];
       stmts.push(`import ${name} from ${this.quote}${library}${this.quote}${this.semicolon}`);
     });
@@ -193,8 +205,9 @@ export class Parser {
       imports = this.unsortedNamesIn(value);
     }
     imports.forEach((name, ix) => {
-      if (ix === 0)
+      if (ix === 0) {
         stmts.push('');
+      }
       const library = value[name];
       stmts.push(`import ${name} = require(${this.quote}${library}${this.quote})${this.semicolon}`);
     });
@@ -211,8 +224,9 @@ export class Parser {
       imports = this.unsortedNamesIn(value);
     }
     imports.forEach((name, ix) => {
-      if (ix === 0)
+      if (ix === 0) {
         stmts.push('');
+      }
       const library = value[name];
       stmts.push(`import ${this.braces[0]}${name}${this.braces[1]} from ${this.quote}${library}${this.quote}${this.semicolon}`);
     });
@@ -229,8 +243,9 @@ export class Parser {
       imports = this.unsortedNamesIn(value);
     }
     imports.forEach((name, ix) => {
-      if (ix === 0)
+      if (ix === 0) {
         stmts.push('');
+      }
       const library = value[name];
       stmts.push(`import ${this.braces[0]}${name}${this.braces[1]} from ${this.quote}${library}${this.quote}${this.semicolon}`);
     });
@@ -247,8 +262,9 @@ export class Parser {
       imports = this.unsortedNamesIn(value);
     }
     imports.forEach((name, ix) => {
-      if (ix === 0)
+      if (ix === 0) {
         stmts.push('');
+      }
       const library = value[name];
       stmts.push(`import * as ${name} from ${this.quote}${library}${this.quote}${this.semicolon}`);
     });
@@ -262,8 +278,9 @@ export class Parser {
       strImports = strImports.sort(this.sortCaseInsensitive);
     }
     strImports.forEach((library, ix) => {
-      if (ix === 0)
+      if (ix === 0) {
         stmts.push('');
+      }
       stmts.push(`import ${this.quote}${library}${this.quote}${this.semicolon}`);
     });
     return stmts;
