@@ -1,65 +1,71 @@
-# typescript-import-splitsort README
+# typescript-import-splitsort
 
-This is the README for your extension "typescript-import-splitsort". After writing up a brief description, we recommend including the following sections.
+My first, very idiosyncratic VS Code extension that perhaps only I will ever use! There are many excellent import sorters available -- [sort-imports](https://marketplace.visualstudio.com/items?itemName=amatiasq.sort-imports) for example -- but `typescript-import-splitsort` is opinionated:
+
+* imports that reference multiple exports can be *organized* but they can't really be *sorted* without splitting them up, one per line
+* if you try to import multiple exports from the same module in one statement, sooner or later you violate the `tslint:line-length` rule; this often hits me with imports from `@angular/core` 
+* multi-export imports don't help you eyeball your imports and they disguise their 'weight' in your code
+
+### Before Split'n'Sort
+
+![Before](before.png)
+
+### After Split'n'Sort 
+
+![After](after.png)
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Automatically splits and sorts imports on save. You can disable this behavior in the settings and split'n'sort manually.
 
-For example if there is an image subfolder under your extension project workspace:
+* Launch the command palette with `Ctrl|Cmd+Shift+P`
+* Type `Split and sort imports`
 
-\!\[feature X\]\(images/feature-x.png\)
+Imports are sorted case-sensitive and broken into 6 categories, in this order:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+```typescript
+import * as vscode from 'vscode';                        // namespace imports
 
-## Requirements
+import { ChangeDetectionStrategy } from '@angular/core'; // named class-like imports
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+import { map } from 'rxjs/operators';                    // named function-like imports
+
+import $ from 'JQuery';                                  // default imports
+
+import zip = require('./ZipCodeValidator');              // external imports
+
+import 'code.js';                                        // string imports
+```
+
+Of course, it is very rare for any code to use all these different `import` types.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+```json
+// Automatically split and sort imports on save (default true)
+"typescript-import-splitsort.on-save": true
+```
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 1.0.4
 
-### 1.0.0
-
-Initial release of ...
+Extension activating for non-TypeScript files
 
 ### 1.0.1
 
-Fixed issue #.
+After eating my own dog food for a while, it became clear that a case-insensitive sort is a Really Bad Idea! Lowercase exports are semantically different to uppercase exports: the former are typically functions and the latter classes. The two are now separated [#1](https://github.com/mflorence99/typescript-import-splitsort/issues/1).
 
-### 1.1.0
+### 1.0.0
 
-Added features X, Y, and Z.
+Initial release.
 
------------------------------------------------------------------------------------------------------------
+## Credits
 
-## Working with Markdown
+Developed by [Mark Florence](https://github.com/mflorence99).
 
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+## Thanks
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
+Many thanks to [sort-imports](https://marketplace.visualstudio.com/items?itemName=amatiasq.sort-imports) for showing the way!
 
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Special thanks to [typescript-parser](https://buehler.github.io/node-typescript-parser/) for a really nice and easy-to-use TypeScript to AST parser.
