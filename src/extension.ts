@@ -28,15 +28,17 @@
 // export function deactivate() {
 // }
 
-import { Disposable } from 'vscode';
+// import { Disposable } from 'vscode';
 import { ExtensionContext } from 'vscode';
 import { Parser } from './parser';
-import { TextDocumentWillSaveEvent } from 'vscode';
+// import { TextDocumentWillSaveEvent } from 'vscode';
 import { TextEdit } from 'vscode';
+import { Selection } from 'vscode';
+// import { TextDocument } from 'vscode';
 
 import { commands } from 'vscode';
 import { window } from 'vscode';
-import { workspace } from 'vscode';
+// import { workspace } from 'vscode';
 
 /**
  * import-splitnsort contract
@@ -47,8 +49,8 @@ export function activate(context:ExtensionContext) {
   const disposable2 = commands.registerCommand('extension.typescript-import-splitsort.splitonly', splitAndDontSort);
   context.subscriptions.push(disposable1);
   context.subscriptions.push(disposable2);
-  onSave();
-  workspace.onDidChangeConfiguration(() => onSave());
+  // onSave();
+  // workspace.onDidChangeConfiguration(() => onSave());
 }
 
 export function deactivate() { }
@@ -56,73 +58,106 @@ export function deactivate() { }
 // private functions
 
 // let subscription: Nullable<Disposable>;
-let subscription:Disposable;
+// let subscription:Disposable;
+let selection:Selection;
+// let text:string;
 
-function onSave() {
-  // typescript-import-splitsort.leave-unsorted
-  const config = workspace.getConfiguration('typescript-import-splitsort');
-  if(config.get<boolean>('on-save')) {
-    if(!subscription) {
-        subscription = workspace.onWillSaveTextDocument(splitAndSortOnSave);
-    }
-  }
-  else {
-    if(subscription) {
-      subscription.dispose();
-      subscription = null;
-    }
-  }
-}
+// function onSave() {
+//   // typescript-import-splitsort.leave-unsorted
+//   const config = workspace.getConfiguration('typescript-import-splitsort');
+//   if(config.get<boolean>('on-save')) {
+//     if(!subscription) {
+//         subscription = workspace.onWillSaveTextDocument(splitAndSortOnSave);
+//     }
+//   }
+//   else {
+//     if(subscription) {
+//       subscription.dispose();
+//       subscription = null;
+//     }
+//   }
+// }
 
 // @see https://github.com/mflorence99/import-splitnsort/issues/2
 
 function splitAndSort() {
+  console.log(`splitAndSort(): Called ...`);
   const editor = window.activeTextEditor;
   let sortIt = true;
+  let text:string;
+  if(editor.selections && editor.selections.length) {
+    selection = editor.selection;
+  } else {
+    selection = null;
+  }
   // const config = workspace.getConfiguration('typescript-import-splitsort');
   // if(config.get<boolean>('leave-unsorted')) {
   //   sortIt = false;
   // }
-
-  if(editor.document.languageId === 'typescript') {
-    Parser.makeEdits(editor.document.getText(), sortIt)
-      .then((edits:TextEdit[]) => {
+  let langId:string = editor && editor.document && typeof editor.document.languageId === 'string' ? editor.document.languageId : "UNKNOWN";
+  if(langId === 'typescript') {
+    if(selection) {
+      text = editor.document.getText(selection);
+    } else {
+      text = editor.document.getText();
+    }
+    console.log(`splitAndSort(): Text is:\n`, text);
+    Parser.makeEdits(text, sortIt).then((edits:TextEdit[]) => {
         if(edits.length > 0) {
           const range = edits[0].range;
           const imports = edits[0].newText;
           editor.edit(edit => edit.replace(range, imports));
         }
       });
+  } else {
+    console.log(`splitAndSort(): Not running on document with syntax '${langId}'!`);
   }
 }
 
 function splitAndDontSort() {
+  console.log(`splitAndDontSort(): Called ...`);
   const editor = window.activeTextEditor;
   let sortIt = false;
+  let text:string;
   // const config = workspace.getConfiguration('typescript-import-splitsort');
   // if(config.get<boolean>('leave-unsorted')) {
   //   sortIt = false;
   // }
-
-  if(editor.document.languageId === 'typescript') {
-    Parser.makeEdits(editor.document.getText(), sortIt)
-      .then((edits:TextEdit[]) => {
+  if(editor.selection) {
+  // if(editor.selections && editor.selections.length) {
+    selection = editor.selection;
+  } else {
+    selection = null;
+  }
+  let langId:string = editor && editor.document && typeof editor.document.languageId === 'string' ? editor.document.languageId : "UNKNOWN";
+  if(langId === 'typescript') {
+    if(selection) {
+      text = editor.document.getText(selection);
+    } else {
+      text = editor.document.getText();
+    }
+    console.log(`splitAndDontSort(): Text is:\n`, text);
+    Parser.makeEdits(text, sortIt).then((edits:TextEdit[]) => {
         if(edits.length > 0) {
           const range = edits[0].range;
           const imports = edits[0].newText;
           editor.edit(edit => edit.replace(range, imports));
         }
       });
+    } else {
+      console.log(`splitAndDontSort(): Not running on document with syntax '${langId}'!`);
+    }
   }
-}
 
-function splitAndSortOnSave(event: TextDocumentWillSaveEvent) {
-  let sortIt = true;
-  const config = workspace.getConfiguration('typescript-import-splitsort');
-  if(config.get<boolean>('leave-unsorted')) {
-    sortIt = false;
-  }
-  if(event.document.languageId === 'typescript') {
-    event.waitUntil(Parser.makeEdits(event.document.getText(), sortIt));
-  }
-}
+// function splitAndSortOnSave(event: TextDocumentWillSaveEvent) {
+//   let sortIt = true;
+//   const config = workspace.getConfiguration('typescript-import-splitsort');
+//   if(config.get<boolean>('leave-unsorted')) {
+//     sortIt = false;
+//   }
+//   // event.document
+//   let doc:TextDocument = event.document;
+//   if(event.document.languageId === 'typescript') {
+//     event.waitUntil(Parser.makeEdits(event.document.getText(), sortIt));
+//   }
+// }

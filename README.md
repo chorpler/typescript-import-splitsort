@@ -62,7 +62,8 @@ Initial release.
 
 ## Credits
 
-Developed by [Mark Florence](https://github.com/mflorence99).
+- This fork developed by [Star Mobile Developers](https://github.com/chorpler)
+- Originally developed by [Mark Florence](https://github.com/mflorence99).
 
 ## Thanks
 

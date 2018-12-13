@@ -1,0 +1,385 @@
+// Place your key bindings in this file to overwrite the defaults
+[
+    {
+      "key": "ctrl+b",
+      "command": "editor.action.jumpToBracket",
+      "when": "editorFocus"
+    },
+    {
+      "key": "ctrl+shift+alt+o",
+      "command": "projectManager.listProjectsNewWindow"
+    },
+    {
+      "key": "ctrl+alt+o",
+      "command": "projectManager.listProjects"
+    },
+    {
+      "key": "shift+alt+p",
+      "command": "-projectManager.listProjects"
+    },
+    {
+      "key": "ctrl+shift+alt+s",
+      "command": "projectManager.saveProject"
+    },
+    {
+      "key": "ctrl+up",
+      "command": "incrementor.incByOne"
+    },
+    {
+      "key": "ctrl+down",
+      "command": "incrementor.decByOne"
+    },
+    {
+      "key": "ctrl+shift+alt+o",
+      "command": "projectManager.listProjectsNewWindow"
+    },
+    {
+      "key": "ctrl+shift+alt+s",
+      "command": "projectManager.saveProject"
+    },
+    {
+      "key": "ctrl+alt+o",
+      "command": "projectManager.listProjects"
+    },
+    {
+      "key": "ctrl+alt+e",
+      "command": "projectManager.editProjects"
+    },
+    {
+      "key": "ctrl+shift+alt+n",
+      "command": "extension.insertNumbers",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+alt+n",
+      "command": "-extension.insertNumbers",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+shift+alt+a",
+      "command": "alignment.align",
+      "when": "editorHasSelection"
+    },
+    {
+      "key": "alt+=",
+      "command": "-alignment.align",
+      "when": "editorHasSelection"
+    },
+    {
+      "key": "ctrl+shift+alt+c",
+      "command": "gitlens.showQuickCommitFileDetails",
+      "when": "editorTextFocus && gitlens:enabled"
+    },
+    {
+      "key": "ctrl+t",
+      "command": "editor.emmet.action.matchTag"
+    },
+    {
+      "key": "ctrl+alt+i",
+      "command": "insertDateString.insertDateTime",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+shift+i",
+      "command": "-insertDateString.insertDateTime",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+alt+d",
+      "command": "editor.action.previewDeclaration",
+      "when": "editorHasDefinitionProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+    },
+    {
+      "key": "alt+f12",
+      "command": "-editor.action.previewDeclaration",
+      "when": "editorHasDefinitionProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+    },
+    {
+      "key": "ctrl+k ctrl+d",
+      "command": "editor.action.openDeclarationToTheSide",
+      "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+    },
+    {
+      "key": "ctrl+k f12",
+      "command": "-editor.action.openDeclarationToTheSide",
+      "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+    },
+    {
+      "key": "ctrl+k ctrl+t",
+      "command": "editor.action.peekTypeDefinition"
+    },
+    {
+      "key": "ctrl+shift+alt+left",
+      "command": "cursorWordStartLeft",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "alt+left",
+      "command": "-cursorWordStartLeft",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+shift+alt+right",
+      "command": "cursorWordEndRight",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "alt+right",
+      "command": "-cursorWordEndRight",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+shift+alt+f12",
+      "command": "editor.action.inspectTMScopes"
+    },
+    {
+      "key": "ctrl+shift+alt+f",
+      "command": "settings.cycle.FontCycler"
+    },
+    {
+      "key": "ctrl+shift+f12",
+      "command": "workbench.action.toggleDevTools"
+    },
+    {
+      "key": "ctrl+y",
+      "command": "redo",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+shift+z",
+      "command": "-redo",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+shift+a",
+      "command": "codealignment.alignbyregex"
+    },
+    {
+      "key": "shift+alt+up",
+      "command": "editor.action.insertCursorAbove",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+alt+up",
+      "command": "-editor.action.insertCursorAbove",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "shift+alt+down",
+      "command": "editor.action.insertCursorBelow",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+alt+down",
+      "command": "-editor.action.insertCursorBelow",
+      "when": "editorTextFocus"
+    },
+    {
+      "key": "ctrl+shift+d",
+      "command": "editor.action.copyLinesDownAction",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "shift+alt+down",
+      "command": "-editor.action.copyLinesDownAction",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+shift+down",
+      "command": "editor.action.moveLinesDownAction",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "alt+down",
+      "command": "-editor.action.moveLinesDownAction",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+shift+up",
+      "command": "editor.action.moveLinesUpAction",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "alt+up",
+      "command": "-editor.action.moveLinesUpAction",
+      "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+alt+n",
+      "command": "editor.action.marker.nextInFiles",
+      "when": "editorFocus && !editorReadonly"
+    },
+    {
+      "key": "f8",
+      "command": "-editor.action.marker.nextInFiles",
+      "when": "editorFocus && !editorReadonly"
+    },
+    {
+      "key": "ctrl+alt+e",
+      "command": "workbench.view.explorer"
+    },
+    {
+      "key": "ctrl+shift+e",
+      "command": "-workbench.view.explorer"
+    },
+    {
+      "key": "ctrl+shift+e",
+      "command": "extension.htmlEntityDecodeComponent"
+    },
+    {
+      "key": "ctrl+e",
+      "command": "extension.htmlEntityEncodeComponent"
+    },
+    {
+      "key": "ctrl+shift+alt+t",
+      "command": "extension.translate"
+    },
+    {
+      "key": "ctrl+shift+t",
+      "command": "-extension.translate"
+    },
+    {
+        "key"    : "ctrl+t",
+        "command": "editor.emmet.action.matchTag"
+    },
+    {
+        "key"    : "ctrl+b",
+        "command": "editor.action.jumpToBracket",
+        "when"   : "editorTextFocus"
+    },
+    {
+        "key": "ctrl+shift+\\",
+        "command": "-editor.action.jumpToBracket",
+        "when"   : "editorTextFocus"
+    },
+    {
+        "key"    : "shift+alt+up",
+        "command": "editor.action.insertCursorAbove",
+        "when"   : "editorTextFocus"
+    },
+    {
+        "key"    : "ctrl+alt+up",
+        "command": "-editor.action.insertCursorAbove",
+        "when"   : "editorTextFocus"
+    },
+    {
+        "key"    : "ctrl+shift+alt+home",
+        "command": "editor.action.copyLinesUpAction",
+        "when"   : "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key"    : "shift+alt+up",
+        "command": "-editor.action.copyLinesUpAction",
+        "when"   : "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key"    : "shift+alt+down",
+        "command": "editor.action.insertCursorBelow",
+        "when"   : "editorTextFocus"
+    },
+    {
+        "key"    : "ctrl+alt+down",
+        "command": "-editor.action.insertCursorBelow",
+        "when"   : "editorTextFocus"
+    },
+    {
+        "key"    : "ctrl+shift+down",
+        "command": "editor.action.moveLinesDownAction",
+        "when"   : "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key"    : "alt+down",
+        "command": "-editor.action.moveLinesDownAction",
+        "when"   : "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key"    : "ctrl+shift+up",
+        "command": "editor.action.moveLinesUpAction",
+        "when"   : "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key"    : "alt+up",
+        "command": "-editor.action.moveLinesUpAction",
+        "when"   : "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key"    : "ctrl+shift+d",
+        "command": "lafe.duplicateCode"
+    },
+    {
+        "key"    : "ctrl+k d",
+        "command": "-lafe.duplicateCode"
+    },
+    {
+        "key"    : "shift+alt+o",
+        "command": "projectManager.listProjects"
+    },
+    {
+        "key"    : "shift+alt+p",
+        "command": "-projectManager.listProjects"
+    },
+    {
+        "key"    : "ctrl+shift+alt+o",
+        "command": "projectManager.listProjectsNewWindow"
+    },
+    {
+        "key"    : "ctrl+shift+alt+s",
+        "command": "projectManager.saveProject"
+    },
+    {
+        "key"    : "ctrl+shift+alt+a",
+        "command": "alignment.align",
+        "when"   : "editorHasSelection"
+    },
+    {
+        "key"    : "alt+=",
+        "command": "-alignment.align",
+        "when"   : "editorHasSelection"
+    },
+    {
+        "key"    : "ctrl+alt+s",
+        "command": "workbench.action.files.saveAll"
+    },
+    {
+        "key"    : "ctrl+k s",
+        "command": "workbench.action.files.saveAll"
+    },
+    {
+        "key": "ctrl+shift+alt+f",
+        "command": "workbench.action.findInFiles",
+        "when": "!searchInputBoxFocus"
+    },
+    {
+        "key": "ctrl+shift+f",
+        "command": "-workbench.action.findInFiles",
+        "when": "!searchInputBoxFocus"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "actions.find"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "-actions.find"
+    },
+    {
+        "key": "ctrl+d",
+        "command": "editor.action.goToDeclaration",
+        "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+    },
+    {
+        "key": "f12",
+        "command": "-editor.action.goToDeclaration",
+        "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+    },
+    {
+        "key": "ctrl+y",
+        "command": "redo",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+shift+z",
+        "command": "-redo",
+        "when": "editorTextFocus && !editorReadonly"
+    }
+]
