@@ -1,7 +1,7 @@
 {
   "name": "typescript-import-splitsort",
   "displayName": "TypeScript Import SplitSorter",
-  "description": "An opinionated extension to split and sort TypeScript imports into one export per import, and optionally sort the resulting imports.",
+  "description": "An opinionated extension to split TypeScript imports into one export per import, and optionally sort and/or align the resulting imports.",
   "version": "1.0.7",
   "galleryBanner": {
     "color": "#424242",
@@ -56,22 +56,22 @@
     "commands": [
       {
         "command": "extension.typescript-import-splitsort.splitsort",
-        "title": "Split and sort imports"
+        "title": "ImportSplitAlign: Split and sort imports"
       }
       ,
       {
         "command": "extension.typescript-import-splitsort.splitonly",
-        "title": "Split imports without sorting or attempting to align result"
+        "title": "ImportSplitAlign: Split imports without sorting or attempting to align result"
       }
       ,
       {
         "command": "extension.typescript-import-splitsort.splitalign",
-        "title": "Split imports, then attempt to align the result (requires extension 'annsk.alignment')"
+        "title": "ImportSplitAlign: Split imports, then attempt to align the result (requires extension 'annsk.alignment')"
       }
       ,
       {
         "command": "extension.typescript-import-splitsort.splitwithsettings",
-        "title": "Split imports, using settings to determine whether to sort and align the results"
+        "title": "ImportSplitAlign: Split imports, using settings to determine whether to sort and align the results"
       }
     ],
     "configuration": {
@@ -80,19 +80,19 @@
         "typescript-import-splitsort.on-save": {
           "type": "boolean",
           "default": false,
-          "description": "Automatically split'n'sort imports on save."
+          "description": "ImportSplitAlign: Automatically split'n'sort imports on save."
         }
         ,
         "typescript-import-splitsort.sort-output": {
           "type": "boolean",
           "default": false,
-          "description": "Whether to leave imports unsorted after splitting them"
+          "description": "ImportSplitAlign: Whether to leave imports unsorted after splitting them"
         }
         ,
         "typescript-import-splitsort.align-output": {
           "type": "boolean",
           "default": true,
-          "description": "Should output be automatically aligned? (Requires extension 'annsk.alignment')"
+          "description": "ImportSplitAlign: Should output be automatically aligned? (Requires extension 'annsk.alignment')"
         }
       }
     }

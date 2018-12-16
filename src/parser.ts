@@ -60,7 +60,7 @@ export class Parser {
 
   /** ctor */
   // constructor(private src: string, vsceditor:TextEditor) {
-  constructor(private src: string, vsceditor:any) {
+  constructor(private src: string, vsceditor?:any) {
     Parser.lastParser = this;
     Log.l(`Parser constructed with source:\n`, src);
     // Log.l(`Static Parser is:\n`, Parser);
@@ -68,19 +68,20 @@ export class Parser {
     global['tsssparser'] = this;
     global['tssseditor'] = vsceditor;
     // let editor = window.activeTextEditor.
+    let id:string = "UNKNOWN_EDITOR_ID";
     if(vsceditor != undefined) {
-      let id:string = vsceditor._id;
-      let eil:EditorImportsList = Parser.editorImportsList;
-      let importsList:ImportsList;
-      if(eil.has(id)) {
-        importsList = eil.get(id);
-      } else {
-        importsList = new Map();
-        Parser.importList = importsList;
-        eil.set(id, importsList);
-      }
-      global['tssseditorimportlist'] = eil;
+      id = vsceditor._id;
     }
+    let eil:EditorImportsList = Parser.editorImportsList;
+    let importsList:ImportsList;
+    if(eil.has(id)) {
+      importsList = eil.get(id);
+    } else {
+      importsList = new Map();
+      Parser.importList = importsList;
+      eil.set(id, importsList);
+    }
+    global['tssseditorimportlist'] = eil;
   }
 
   /** Make an edit to replace imports */

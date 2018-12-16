@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+// import * as vscode from 'vscode';
 // import { TextDocument              } from 'vscode'   ;
 import { Disposable                } from 'vscode'   ;
 import { TextLine                  } from 'vscode'   ;
@@ -14,10 +14,12 @@ import { Position                  } from 'vscode'   ;
 import { commands                  } from 'vscode'   ;
 import { window                    } from 'vscode'   ;
 import { workspace                 } from 'vscode'   ;
-import { name, version             } from '../package';
+import { extensions                } from 'vscode'   ;
+const packageJSON = require('../package.json');
+// import { name, version             } from '../package';
 
-const extensionName:string = name || "typescript-import-splitsort";
-const extensionVersion:string = version || "1.0.6";
+const extensionName:string = packageJSON && packageJSON.name ? packageJSON.name : "typescript-import-splitsort";
+const extensionVersion:string = packageJSON && packageJSON.version ? packageJSON.version : "1.0.6";
 // const extensionName:string = "typescript-import-splitsort";
 
 type AlignAPI = {
@@ -42,7 +44,7 @@ export const Log = {
 
 const emph:string = "color: black; font-weight: bold; background-color: rgba(255,128,128,0.5);";
 const emph2:string = "color: black; font-weight: bold; background-color: rgba(128,255,128,0.5);";
-global['vscode'] = vscode;
+// global['vscode'] = vscode;
 
 /**
  * import-splitnsort contract
@@ -94,7 +96,7 @@ async function splitters(sort:boolean, align:boolean):Promise<any> {
     const editor = window.activeTextEditor;
     const config = workspace.getConfiguration(extensionName);
     let sortIt:boolean = typeof sort === 'boolean' ? sort : false;
-    let alignIt:boolean = typeof align === 'boolean' ? sort : false;
+    let alignIt:boolean = typeof align === 'boolean' ? align : false;
     if(!(editor && config)) {
       Log.l(`%c splitters(): Could not get active editor.`, emph);
       return;
@@ -255,7 +257,7 @@ function splitAndDontSort() {
 }
 
 function splitAndAlign() {
-  Log.l(`%c splitAndDontSort(): Called ...`, emph);
+  Log.l(`%c splitAndAlign(): Called ...`, emph);
   splitters(false, true);
 }
 
@@ -279,7 +281,11 @@ function splitAndSortOnSave(event: TextDocumentWillSaveEvent) {
 async function alignOutput():Promise<boolean> {
   try {
     Log.l(`alignOutput(): Called!`);
-    let extAlign:Extension<AlignAPI> = vscode.extensions.getExtension('annsk.alignment');
+    if(!extensions) {
+      Log.w(`alignOutput(): Cannot access VSCode extensions`);
+      return false;
+    }
+    let extAlign:Extension<AlignAPI> = extensions.getExtension('annsk.alignment');
     if(extAlign) {
       if(!extAlign.isActive) {
         Log.l(`alignOutput(): Extension not activated, activating it ...`);
@@ -289,7 +295,7 @@ async function alignOutput():Promise<boolean> {
       Log.l(`alignOutput(): Now running align command ...`);
       align.align();
       Log.l(`alignOutput(): Done!`);
-      return;
+      return true;
     } else {
       Log.l(`alignOutput(): Could not find extension 'annsk.alignment'. Aborting.`);
       return false;
