@@ -2,7 +2,7 @@
   "name": "typescript-import-splitsort",
   "displayName": "TypeScript Import SplitSorter",
   "description": "An opinionated extension to split and sort TypeScript imports into one export per import, and optionally sort the resulting imports.",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "galleryBanner": {
     "color": "#424242",
     "theme": "dark"
@@ -25,34 +25,53 @@
     "Formatters"
   ],
   "activationEvents": [
-    "onCommand:extension.typescript-import-splitsort.splitnsort",
+    "onCommand:extension.typescript-import-splitsort.splitsort",
     "onCommand:extension.typescript-import-splitsort.splitonly",
+    "onCommand:extension.typescript-import-splitsort.splitalign",
+    "onCommand:extension.typescript-import-splitsort.splitwithsettings",
     "onLanguage:typescript"
   ],
   "main": "./out/extension",
   "contributes": {
     "keybindings": [
       {
-        "command": "extension.typescript-import-splitsort.splitonly",
+        "command": "extension.typescript-import-splitsort.splitalign",
         "key": "ctrl+k ctrl+i",
         "mac": "cmd+k cmd+i",
         "when": "editorLangId == typescript"
       },
       {
-        "command": "extension.typescript-import-splitsort.splitnsort",
-        "key": "ctrl+k ctrl+8",
-        "mac": "cmd+k cmd+8",
+        "command": "extension.typescript-import-splitsort.splitonly",
+        "key": "ctrl+k 7",
+        "mac": "cmd+k 7",
+        "when": "editorLangId == typescript"
+      },
+      {
+        "command": "extension.typescript-import-splitsort.splitsort",
+        "key": "ctrl+k 8",
+        "mac": "cmd+k 8",
         "when": "editorLangId == typescript"
       }
     ],
     "commands": [
       {
-        "command": "extension.typescript-import-splitsort.splitnsort",
+        "command": "extension.typescript-import-splitsort.splitsort",
         "title": "Split and sort imports"
-      },
+      }
+      ,
       {
         "command": "extension.typescript-import-splitsort.splitonly",
-        "title": "Split imports without sorting"
+        "title": "Split imports without sorting or attempting to align result"
+      }
+      ,
+      {
+        "command": "extension.typescript-import-splitsort.splitalign",
+        "title": "Split imports, then attempt to align the result (requires extension 'annsk.alignment')"
+      }
+      ,
+      {
+        "command": "extension.typescript-import-splitsort.splitwithsettings",
+        "title": "Split imports, using settings to determine whether to sort and align the results"
       }
     ],
     "configuration": {
@@ -62,11 +81,18 @@
           "type": "boolean",
           "default": false,
           "description": "Automatically split'n'sort imports on save."
-        },
-        "typescript-import-splitsort.leave-unsorted": {
+        }
+        ,
+        "typescript-import-splitsort.sort-output": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to leave imports unsorted after splitting them"
+        }
+        ,
+        "typescript-import-splitsort.align-output": {
           "type": "boolean",
           "default": true,
-          "description": "Whether to leave imports unsorted after splitting them"
+          "description": "Should output be automatically aligned? (Requires extension 'annsk.alignment')"
         }
       }
     }

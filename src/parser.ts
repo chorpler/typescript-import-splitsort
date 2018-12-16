@@ -1,16 +1,17 @@
-import { ExternalModuleImport } from 'typescript-parser';
-import { File } from 'typescript-parser';
-import { Import } from 'typescript-parser';
-import { NamedImport } from 'typescript-parser';
-import { NamespaceImport } from 'typescript-parser';
-import { Position } from 'vscode';
-import { Range } from 'vscode';
-// import { window } from 'vscode';
-import { StringImport } from 'typescript-parser';
-import { SymbolSpecifier } from 'typescript-parser';
-import { TextEdit } from 'vscode';
-// import { TextEditor } from 'vscode';
-import { TypescriptParser } from 'typescript-parser';
+// import { window               } from 'vscode'            ;
+// import { TextEditor           } from 'vscode'            ;
+import { ExternalModuleImport } from 'typescript-parser' ;
+import { File                 } from 'typescript-parser' ;
+import { Import               } from 'typescript-parser' ;
+import { NamedImport          } from 'typescript-parser' ;
+import { NamespaceImport      } from 'typescript-parser' ;
+import { Position             } from 'vscode'            ;
+import { Range                } from 'vscode'            ;
+import { StringImport         } from 'typescript-parser' ;
+import { SymbolSpecifier      } from 'typescript-parser' ;
+import { TextEdit             } from 'vscode'            ;
+import { TypescriptParser     } from 'typescript-parser' ;
+import { Log                  } from './extension'       ;
 
 // const clone:Function = (val:any):any => {
 //   let tmpVal = JSON.stringify(val);
@@ -61,9 +62,9 @@ export class Parser {
   // constructor(private src: string, vsceditor:TextEditor) {
   constructor(private src: string, vsceditor:any) {
     Parser.lastParser = this;
-    console.log(`Parser constructed with source:\n`, src);
-    // console.log(`Static Parser is:\n`, Parser);
-    // console.log(`This parser is:\n`, this);
+    Log.l(`Parser constructed with source:\n`, src);
+    // Log.l(`Static Parser is:\n`, Parser);
+    // Log.l(`This parser is:\n`, this);
     global['tsssparser'] = this;
     global['tssseditor'] = vsceditor;
     // let editor = window.activeTextEditor.
@@ -83,34 +84,43 @@ export class Parser {
   }
 
   /** Make an edit to replace imports */
-  static makeEdits(src: string, toSort:boolean, vsceditor:any): Promise<TextEdit[]> {
-    return new Promise((resolve, reject) => {
+  static async makeEdits(src:string, toSort:boolean, vsceditor:any):Promise<TextEdit[]> {
+    try {
       if(toSort) {
         Parser.sortImports = true;
       }
-      const parser = new Parser(src, vsceditor);
-      parser.parse().then(() => {
-        const imports = parser.produce();
-        // console.log(`Parser.makeEdits(): importsList is now:\n`, Parser.importList);
-        // let strList:string = JSON.stringify(Parser.importList);
-        // console.log(`Parser.makeEdits(): importsList is now:\n`, strList);
-        global['tsssimportlist'] = Parser.importList;
-        global['tssseditorimportlist'] = Parser.editorImportsList;
-        resolve((imports.length > 0)? [TextEdit.replace(parser.range, imports)] : []);
-      });
-    });
+      let parser:Parser = new Parser(src, vsceditor);
+      // let res:any = await parser.parse();
+      await parser.parse();
+      let imports:string = parser.produce();
+      if(imports.trim().split("\n").length > 1) {
+        imports = imports + "\n";
+      }
+      // Log.l(`Parser.makeEdits(): importsList is now:\n`, Parser.importList);
+      // let strList:string = JSON.stringify(Parser.importList);
+      // Log.l(`Parser.makeEdits(): importsList is now:\n`, strList);
+      global['tsssimportlist'] = Parser.importList;
+      global['tssseditorimportlist'] = Parser.editorImportsList;
+      let output:TextEdit[] = (imports.length > 0)? [TextEdit.replace(parser.range, imports)] : [];
+      // resolve((imports.length > 0)? [TextEdit.replace(parser.range, imports)] : []);
+      return output;
+    } catch(err) {
+      Log.l(`Parser.makeEdits(): Error making edits`);
+      Log.e(err);
+      throw err;
+    }
   }
 
   /** Parse the source, extracting the imports */
-  parse(): Promise<any> {
+  parse():Promise<any> {
     if(!this.src.includes('import ')) {
       return Promise.resolve();
     } else {
       return new Promise((resolve, reject) => {
-        this.parser.parseSource(this.src).then((file: File) => {
+        this.parser.parseSource(this.src).then((file:File) => {
           let start = Number.MAX_SAFE_INTEGER;
           let end = Number.MIN_SAFE_INTEGER;
-          file.imports.forEach((node: Import) => {
+          file.imports.forEach((node:Import) => {
             // let libName:string = node.libraryName;
             // let importName:string = node.
             // let libImports:string[];
@@ -147,7 +157,7 @@ export class Parser {
 
   /** Produce sorted import statements */
   produce(): string {
-    const stmts = this.produceNamespace()
+    const stmts:string[] = this.produceNamespace()
       .concat(this.produceNamedClass())
       .concat(this.produceNamedFunction())
       .concat(this.produceDefault())
@@ -163,7 +173,7 @@ export class Parser {
   public addImportToLibrary(libraryName:string, importAlias:string):string[] {
     let li:ImportsList = Parser.importList;
     let imports:string[];
-    // console.log(`addImportsToLibrary(): Attempting to add '${importAlias}' to library '${libraryName}'`);
+    // Log.l(`addImportsToLibrary(): Attempting to add '${importAlias}' to library '${libraryName}'`);
     if(li.has(libraryName)) {
       imports = li.get(libraryName);
     } else {
