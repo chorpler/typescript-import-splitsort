@@ -48,17 +48,7 @@ Of course, it is very rare for any code to use all these different `import` type
 
 ## Release Notes
 
-### 1.0.4
-
-Extension activating for non-TypeScript files
-
-### 1.0.1
-
-After eating my own dog food for a while, it became clear that a case-insensitive sort is a Really Bad Idea! Lowercase exports are semantically different to uppercase exports: the former are typically functions and the latter classes. The two are now separated [#1](https://github.com/mflorence99/typescript-import-splitsort/issues/1).
-
-### 1.0.0
-
-Initial release.
+See [CHANGELOG](./CHANGELOG.md).
 
 ## Credits
 

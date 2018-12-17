@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/chorpler/typescript-import-splitsort.git"
   },
-  "icon": "icon.png",
+  "icon": "icon_ts_split_sort_align.png",
   "publisher": "StarMobileDevelopers",
   "engines": {
     "vscode": "^1.26.0"
