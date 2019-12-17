@@ -3,6 +3,10 @@ All notable changes to the "**typescript-import-splitsort**" extension will be d
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+### 1.0.8
+
+- Greatly reduced packaged size by excluding `node_modules/**/*`, since it's already using webpack. 😑
+
 ### 1.0.7
 
 - Added the ability to process only selected import lines, or only the current line

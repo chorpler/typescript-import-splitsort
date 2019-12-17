@@ -2,7 +2,7 @@
   "name": "typescript-import-splitsort",
   "displayName": "TypeScript Import SplitSorter",
   "description": "An opinionated extension to split TypeScript imports into one export per import, and optionally sort and/or align the resulting imports.",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "galleryBanner": {
     "color": "#424242",
     "theme": "dark"
@@ -57,18 +57,15 @@
       {
         "command": "extension.typescript-import-splitsort.splitsort",
         "title": "ImportSplitAlign: Split and sort imports"
-      }
-      ,
+      },
       {
         "command": "extension.typescript-import-splitsort.splitonly",
         "title": "ImportSplitAlign: Split imports without sorting or attempting to align result"
-      }
-      ,
+      },
       {
         "command": "extension.typescript-import-splitsort.splitalign",
         "title": "ImportSplitAlign: Split imports, then attempt to align the result (requires extension 'annsk.alignment')"
-      }
-      ,
+      },
       {
         "command": "extension.typescript-import-splitsort.splitwithsettings",
         "title": "ImportSplitAlign: Split imports, using settings to determine whether to sort and align the results"
@@ -81,14 +78,12 @@
           "type": "boolean",
           "default": false,
           "description": "ImportSplitAlign: Automatically split'n'sort imports on save."
-        }
-        ,
+        },
         "typescript-import-splitsort.sort-output": {
           "type": "boolean",
           "default": false,
           "description": "ImportSplitAlign: Whether to leave imports unsorted after splitting them"
-        }
-        ,
+        },
         "typescript-import-splitsort.align-output": {
           "type": "boolean",
           "default": true,
@@ -98,21 +93,31 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    "vscode:prepublish2": "npm run compile",
+    "compile2": "tsc -p ./",
+    "watch2": "tsc -watch -p ./",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "vscode:prepublish": "webpack --mode production",
+    "compile": "webpack --mode none",
+    "watch": "webpack --mode none --watch",
+    "test-compile": "tsc -p ./",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch",
+    "package": "vsce package",
+    "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.42",
     "@types/node": "^8.10.25",
     "eslint": "^4.19.1",
     "rxjs-tslint-rules": "^4.13.1",
+    "ts-loader": "^6.0.3",
     "tslint": "^5.8.0",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.1.4",
-    "vscode": "^1.1.26"
+    "vscode": "^1.1.26",
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.4"
   },
   "dependencies": {
     "typescript-parser": "^2.6.1"
