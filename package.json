@@ -2,7 +2,7 @@
   "name": "typescript-import-splitsort",
   "displayName": "TypeScript Import SplitSorter",
   "description": "An opinionated extension to split TypeScript imports into one export per import, and optionally sort and/or align the resulting imports.",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "galleryBanner": {
     "color": "#424242",
     "theme": "dark"
@@ -31,7 +31,7 @@
     "onCommand:extension.typescript-import-splitsort.splitwithsettings",
     "onLanguage:typescript"
   ],
-  "main": "./out/extension",
+  "main": "./dist/extension",
   "contributes": {
     "keybindings": [
       {
@@ -90,6 +90,11 @@
           "description": "ImportSplitAlign: Should output be automatically aligned? (Requires extension 'annsk.alignment')"
         }
       }
+    }
+  },
+  "rootComments": {
+    "original": {
+      "main": "./out/extension"
     }
   },
   "scripts": {

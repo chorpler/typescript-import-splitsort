@@ -3,6 +3,10 @@ All notable changes to the "**typescript-import-splitsort**" extension will be d
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+### 1.0.9
+
+- Fixed the `package.json` entry `main` for the new webpack directory. 😑😑😑😑😑😑😑
+
 ### 1.0.8
 
 - Greatly reduced packaged size by excluding `node_modules/**/*`, since it's already using webpack. 😑

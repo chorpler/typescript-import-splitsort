@@ -19,7 +19,7 @@ const packageJSON = require('../package.json');
 // import { name, version             } from '../package';
 
 const extensionName:string = packageJSON && packageJSON.name ? packageJSON.name : "typescript-import-splitsort";
-const extensionVersion:string = packageJSON && packageJSON.version ? packageJSON.version : "1.0.6";
+const extensionVersion:string = packageJSON && packageJSON.version ? packageJSON.version : "1.0.9";
 // const extensionName:string = "typescript-import-splitsort";
 
 type AlignAPI = {
