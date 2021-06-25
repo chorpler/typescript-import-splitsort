@@ -2,7 +2,7 @@
   "name": "typescript-import-splitsort",
   "displayName": "TypeScript Import SplitSorter",
   "description": "An opinionated extension to split TypeScript imports into one export per import, and optionally sort and/or align the resulting imports.",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "galleryBanner": {
     "color": "#424242",
     "theme": "dark"

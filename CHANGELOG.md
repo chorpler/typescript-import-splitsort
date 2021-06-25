@@ -3,6 +3,14 @@ All notable changes to the "**typescript-import-splitsort**" extension will be d
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+### 1.0.11
+
+- Changed to call `vscodealign.alignimports` using `vscode.command.executeCommands()` method
+
+### 1.0.10
+
+- Changed to use `starmobiledevelopers.vscodealign` as the alignment extension
+
 ### 1.0.9
 
 - Fixed the `package.json` entry `main` for the new webpack directory. 😑😑😑😑😑😑😑

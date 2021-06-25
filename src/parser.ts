@@ -150,7 +150,7 @@ export class Parser {
           });
           this.detectCodingStyle(start, end);
           this.makeRange(start, end);
-          resolve();
+          resolve(null);
         });
       });
     }

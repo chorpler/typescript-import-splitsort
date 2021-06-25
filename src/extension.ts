@@ -19,12 +19,25 @@ const packageJSON = require('../package.json');
 // import { name, version             } from '../package';
 
 const extensionName:string = packageJSON && packageJSON.name ? packageJSON.name : "typescript-import-splitsort";
-const extensionVersion:string = packageJSON && packageJSON.version ? packageJSON.version : "1.0.9";
+const extensionVersion:string = packageJSON && packageJSON.version ? packageJSON.version : "1.0.10";
 // const extensionName:string = "typescript-import-splitsort";
 
-type AlignAPI = {
-  align: Function,
-  alignWhitespace: Function,
+// type AlignAPI = {
+//   align: Function,
+//   alignWhitespace: Function,
+// }
+
+type VSCodeAlignAPI = {
+  // align: Function,
+  // alignWhitespace: Function,
+  Log            : Function,
+  delay          : Function,
+  doAlignment    : Function,
+  alignByString  : Function,
+  alignByRegex   : Function,
+  alignWithRegex : Function,
+  alignImports   : Function,
+  activate       : Function,
 };
 
 export const Log = {
@@ -247,17 +260,17 @@ async function splitters(sort:boolean, align:boolean):Promise<any> {
 // @see https://github.com/mflorence99/import-splitnsort/issues/2
 
 function splitAndSort() {
-  Log.l(`\n%c splitAndSort(): Called ...`, emph);
+  Log.l(`\n%c splitAndSort(): Called …`, emph);
   splitters(true, false);
 }
 
 function splitAndDontSort() {
-  Log.l(`%c splitAndDontSort(): Called ...`, emph);
+  Log.l(`%c splitAndDontSort(): Called …`, emph);
   splitters(false, false);
 }
 
 function splitAndAlign() {
-  Log.l(`%c splitAndAlign(): Called ...`, emph);
+  Log.l(`%c splitAndAlign(): Called …`, emph);
   splitters(false, true);
 }
 
@@ -279,25 +292,29 @@ function splitAndSortOnSave(event: TextDocumentWillSaveEvent) {
 }
 
 async function alignOutput():Promise<boolean> {
+  const ALIGN_EXTENSION = "starmobiledevelopers.vscodealign";
+  const ALIGN_COMMAND = "vscodealign.alignimports";
   try {
     Log.l(`alignOutput(): Called!`);
     if(!extensions) {
       Log.w(`alignOutput(): Cannot access VSCode extensions`);
       return false;
     }
-    let extAlign:Extension<AlignAPI> = extensions.getExtension('annsk.alignment');
+    let extAlign:Extension<VSCodeAlignAPI> = extensions.getExtension(ALIGN_EXTENSION);
     if(extAlign) {
       if(!extAlign.isActive) {
-        Log.l(`alignOutput(): Extension not activated, activating it ...`);
+        Log.l(`alignOutput(): Extension not activated, activating it …`);
         await extAlign.activate();
       }
-      let align:AlignAPI = extAlign.exports;
-      Log.l(`alignOutput(): Now running align command ...`);
-      align.align();
+      Log.l(`alignOutput(): extAlign is now:`, extAlign);
+      Log.l(`alignOutput(): Now running alignImports command …`);
+      commands.executeCommand(ALIGN_COMMAND);
+      // let align:VSCodeAlignAPI = extAlign.exports;
+      // align.alignImports();
       Log.l(`alignOutput(): Done!`);
       return true;
     } else {
-      Log.l(`alignOutput(): Could not find extension 'annsk.alignment'. Aborting.`);
+      Log.l(`alignOutput(): Could not find extension '${ALIGN_EXTENSION}'. Aborting.`);
       return false;
     }
   } catch(err) {
@@ -306,3 +323,33 @@ async function alignOutput():Promise<boolean> {
     throw err;
   }
 }
+
+// async function alignOutputOriginal():Promise<boolean> {
+//   const ALIGN_EXTENSION = "annsk.alignment";
+//   try {
+//     Log.l(`alignOutput(): Called!`);
+//     if(!extensions) {
+//       Log.w(`alignOutput(): Cannot access VSCode extensions`);
+//       return false;
+//     }
+//     let extAlign:Extension<AlignAPI> = extensions.getExtension(ALIGN_EXTENSION);
+//     if(extAlign) {
+//       if(!extAlign.isActive) {
+//         Log.l(`alignOutput(): Extension not activated, activating it ...`);
+//         await extAlign.activate();
+//       }
+//       let align:AlignAPI = extAlign.exports;
+//       Log.l(`alignOutput(): Now running align command ...`);
+//       align.align();
+//       Log.l(`alignOutput(): Done!`);
+//       return true;
+//     } else {
+//       Log.l(`alignOutput(): Could not find extension '${ALIGN_EXTENSION}'. Aborting.`);
+//       return false;
+//     }
+//   } catch(err) {
+//     Log.l(`alignOutput(): Error aligning output`);
+//     Log.e(err);
+//     throw err;
+//   }
+// }
